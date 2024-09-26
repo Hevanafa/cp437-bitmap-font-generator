@@ -42,10 +42,15 @@
             this.btnForeground = new System.Windows.Forms.Button();
             this.btnBackground = new System.Windows.Forms.Button();
             this.cbTransparentBackground = new System.Windows.Forms.CheckBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.nudCorrectionX = new System.Windows.Forms.NumericUpDown();
+            this.nudCorrectionY = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCharacterWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCharacterHeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudFontSize)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCorrectionX)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCorrectionY)).BeginInit();
             this.SuspendLayout();
             // 
             // lsbFontList
@@ -62,7 +67,7 @@
             // lblFontName
             // 
             this.lblFontName.AutoSize = true;
-            this.lblFontName.Location = new System.Drawing.Point(296, 9);
+            this.lblFontName.Location = new System.Drawing.Point(211, 12);
             this.lblFontName.Name = "lblFontName";
             this.lblFontName.Size = new System.Drawing.Size(87, 16);
             this.lblFontName.TabIndex = 1;
@@ -70,9 +75,9 @@
             // 
             // pbPreview
             // 
-            this.pbPreview.Location = new System.Drawing.Point(299, 51);
+            this.pbPreview.Location = new System.Drawing.Point(211, 51);
             this.pbPreview.Name = "pbPreview";
-            this.pbPreview.Size = new System.Drawing.Size(218, 255);
+            this.pbPreview.Size = new System.Drawing.Size(303, 283);
             this.pbPreview.TabIndex = 2;
             this.pbPreview.TabStop = false;
             // 
@@ -88,7 +93,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(523, 173);
+            this.label3.Location = new System.Drawing.Point(520, 169);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(102, 16);
             this.label3.TabIndex = 4;
@@ -96,15 +101,16 @@
             // 
             // nudCharacterWidth
             // 
-            this.nudCharacterWidth.Location = new System.Drawing.Point(523, 147);
+            this.nudCharacterWidth.Location = new System.Drawing.Point(575, 143);
             this.nudCharacterWidth.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
             this.nudCharacterWidth.Name = "nudCharacterWidth";
-            this.nudCharacterWidth.Size = new System.Drawing.Size(120, 23);
+            this.nudCharacterWidth.Size = new System.Drawing.Size(50, 23);
             this.nudCharacterWidth.TabIndex = 5;
+            this.nudCharacterWidth.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudCharacterWidth.Value = new decimal(new int[] {
             8,
             0,
@@ -114,15 +120,16 @@
             // 
             // nudCharacterHeight
             // 
-            this.nudCharacterHeight.Location = new System.Drawing.Point(523, 192);
+            this.nudCharacterHeight.Location = new System.Drawing.Point(575, 188);
             this.nudCharacterHeight.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
             this.nudCharacterHeight.Name = "nudCharacterHeight";
-            this.nudCharacterHeight.Size = new System.Drawing.Size(120, 23);
+            this.nudCharacterHeight.Size = new System.Drawing.Size(50, 23);
             this.nudCharacterHeight.TabIndex = 6;
+            this.nudCharacterHeight.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudCharacterHeight.Value = new decimal(new int[] {
             12,
             0,
@@ -133,7 +140,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(296, 32);
+            this.label4.Location = new System.Drawing.Point(211, 32);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(52, 16);
             this.label4.TabIndex = 7;
@@ -142,7 +149,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(523, 51);
+            this.label1.Location = new System.Drawing.Point(520, 51);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(90, 16);
             this.label1.TabIndex = 8;
@@ -150,10 +157,11 @@
             // 
             // nudFontSize
             // 
-            this.nudFontSize.Location = new System.Drawing.Point(523, 70);
+            this.nudFontSize.Location = new System.Drawing.Point(575, 70);
             this.nudFontSize.Name = "nudFontSize";
-            this.nudFontSize.Size = new System.Drawing.Size(120, 23);
+            this.nudFontSize.Size = new System.Drawing.Size(50, 23);
             this.nudFontSize.TabIndex = 9;
+            this.nudFontSize.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudFontSize.Value = new decimal(new int[] {
             12,
             0,
@@ -167,11 +175,11 @@
             this.txbSearch.Name = "txbSearch";
             this.txbSearch.Size = new System.Drawing.Size(192, 23);
             this.txbSearch.TabIndex = 10;
-            this.txbSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txbSearch_KeyDown);
+            this.txbSearch.TextChanged += new System.EventHandler(this.txbSearch_TextChanged);
             // 
             // btnForeground
             // 
-            this.btnForeground.Location = new System.Drawing.Point(559, 237);
+            this.btnForeground.Location = new System.Drawing.Point(554, 230);
             this.btnForeground.Name = "btnForeground";
             this.btnForeground.Size = new System.Drawing.Size(40, 40);
             this.btnForeground.TabIndex = 11;
@@ -180,7 +188,7 @@
             // 
             // btnBackground
             // 
-            this.btnBackground.Location = new System.Drawing.Point(578, 256);
+            this.btnBackground.Location = new System.Drawing.Point(573, 249);
             this.btnBackground.Name = "btnBackground";
             this.btnBackground.Size = new System.Drawing.Size(40, 40);
             this.btnBackground.TabIndex = 12;
@@ -198,11 +206,61 @@
             this.cbTransparentBackground.UseVisualStyleBackColor = true;
             this.cbTransparentBackground.CheckedChanged += new System.EventHandler(this.cbTransparentBackground_CheckedChanged);
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(655, 124);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(106, 16);
+            this.label5.TabIndex = 14;
+            this.label5.Text = "Output correction";
+            // 
+            // nudCorrectionX
+            // 
+            this.nudCorrectionX.Location = new System.Drawing.Point(658, 143);
+            this.nudCorrectionX.Maximum = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            this.nudCorrectionX.Minimum = new decimal(new int[] {
+            30,
+            0,
+            0,
+            -2147483648});
+            this.nudCorrectionX.Name = "nudCorrectionX";
+            this.nudCorrectionX.Size = new System.Drawing.Size(50, 23);
+            this.nudCorrectionX.TabIndex = 15;
+            this.nudCorrectionX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.nudCorrectionX.ValueChanged += new System.EventHandler(this.nudCorrectionX_ValueChanged);
+            // 
+            // nudCorrectionY
+            // 
+            this.nudCorrectionY.Location = new System.Drawing.Point(714, 143);
+            this.nudCorrectionY.Maximum = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            this.nudCorrectionY.Minimum = new decimal(new int[] {
+            30,
+            0,
+            0,
+            -2147483648});
+            this.nudCorrectionY.Name = "nudCorrectionY";
+            this.nudCorrectionY.Size = new System.Drawing.Size(50, 23);
+            this.nudCorrectionY.TabIndex = 16;
+            this.nudCorrectionY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.nudCorrectionY.ValueChanged += new System.EventHandler(this.nudCorrectionY_ValueChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(697, 366);
+            this.ClientSize = new System.Drawing.Size(776, 349);
+            this.Controls.Add(this.nudCorrectionY);
+            this.Controls.Add(this.nudCorrectionX);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.cbTransparentBackground);
             this.Controls.Add(this.btnForeground);
             this.Controls.Add(this.btnBackground);
@@ -218,7 +276,9 @@
             this.Controls.Add(this.lblFontName);
             this.Controls.Add(this.lsbFontList);
             this.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(4);
+            this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -226,6 +286,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudCharacterWidth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCharacterHeight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudFontSize)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCorrectionX)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCorrectionY)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -247,6 +309,9 @@
         private System.Windows.Forms.Button btnForeground;
         private System.Windows.Forms.Button btnBackground;
         private System.Windows.Forms.CheckBox cbTransparentBackground;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.NumericUpDown nudCorrectionX;
+        private System.Windows.Forms.NumericUpDown nudCorrectionY;
     }
 }
 

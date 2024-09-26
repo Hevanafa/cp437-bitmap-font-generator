@@ -18,7 +18,8 @@ namespace BitmapFontGenerator
 
         List<string> fontNames;
         Dictionary<FontCacheKey, Bitmap> fontCache;
-        string top32 = " \u263a\u263B\u2665\u2666\u2663\u2660\u2022" + 
+
+        const string top32 = " \u263a\u263B\u2665\u2666\u2663\u2660\u2022" + 
             "\u25D8\u25CB\u25D9\u2642\u2640\u266A\u266B\u263C" +
             "\u25BA\u25C4\u2195\u203C\u00B6\u00A7\u25AC\u21A8" +
             "\u2191\u2193\u2192\u2190\u221F\u2194\u25B2\u25BC";
@@ -26,7 +27,7 @@ namespace BitmapFontGenerator
         // Source: Wikipedia (https://en.wikipedia.org/wiki/Code_page_437)
         // Obtain all <span> in the table row
         // [...$0.querySelectorAll("span")].map(span => "\\u" + span.innerText).join("")
-        string bottom128 = "\u00C7\u00FC\u00E9\u00E2\u00E4\u00E0\u00E5\u00E7\u00EA\u00EB\u00E8\u00EF\u00EE\u00EC\u00C4\u00C5" + // 8x
+        const string bottom128 = "\u00C7\u00FC\u00E9\u00E2\u00E4\u00E0\u00E5\u00E7\u00EA\u00EB\u00E8\u00EF\u00EE\u00EC\u00C4\u00C5" + // 8x
             "\u00C9\u00E6\u00C6\u00F4\u00F6\u00F2\u00FB\u00F9\u00FF\u00D6\u00DC\u00A2\u00A3\u00A5\u20A7\u0192" + // 9x
             "\u00E1\u00ED\u00F3\u00FA\u00F1\u00D1\u00AA\u00BA\u00BF\u2310\u00AC\u00BD\u00BC\u00A1\u00AB\u00BB" + // Ax
             "\u2591\u2592\u2593\u2502\u2524\u2561\u2562\u2556\u2555\u2563\u2551\u2557\u255D\u255C\u255B\u2510" + // Bx
@@ -86,45 +87,53 @@ namespace BitmapFontGenerator
         int getCharacterHeight() { return (int)nudCharacterHeight.Value; }
         bool getTransparentBackground() { return cbTransparentBackground.Checked; }
 
+        int getCorrectionX() { return (int)nudCorrectionX.Value; }
+        int getCorrectionY() { return (int)nudCorrectionY.Value; }
+
         void regeneratePreview() {
             var fontName = getFontName();
 
             // Todo: foreground & background
             // Is caching really necessary?
-            var newKey = new FontCacheKey(fontName, getFontSize(), getCharacterWidth(), getCharacterHeight());
+            //var newKey = new FontCacheKey(fontName, getFontSize(), getCharacterWidth(), getCharacterHeight());
 
-            if (!fontCache.ContainsKey(newKey)) {
-                lblFontName.Text = fontName;
+            //if (!fontCache.ContainsKey(newKey)) {
+            lblFontName.Text = $"Font name: {fontName}";
 
-                var bmp = new Bitmap(getCharacterWidth() * 16, getCharacterHeight() * 16);
-                fontCache.Add(newKey, bmp);
+            var bmp = new Bitmap(getCharacterWidth() * 16, getCharacterHeight() * 16);
+            //fontCache.Add(newKey, bmp);
 
-                var font = new Font(fontName, (float)nudFontSize.Value);
-                var brush = new SolidBrush(Foreground);
+            var font = new Font(fontName, getFontSize());
+            var brush = new SolidBrush(Foreground);
 
-                using (Graphics g = Graphics.FromImage(bmp)) {
-                    if (!getTransparentBackground())
-                        g.Clear(Background);
+            using (Graphics g = Graphics.FromImage(bmp)) {
+                if (!getTransparentBackground())
+                    g.Clear(Background);
 
-                    int index, a, b;
+                int index, a, b;
+                string ch;
+                Point pos = new Point();
 
-                    for (b = 0; b < 16; b++)
-                        for (a = 0; a < 16; a++) {
-                            index = b * 16 + a;
+                for (b = 0; b < 16; b++)
+                    for (a = 0; a < 16; a++) {
+                        index = b * 16 + a;
+                        ch = index < 32
+                            ? "" + top32[index]
+                            : index >= 128
+                            ? "" + bottom128[index - 128]
+                            : index == 0x7f
+                            ? "\u2302"
+                            : "" + ((char)index);
 
-                            g.DrawString(
-                                index < 32
-                                ? "" + top32[index]
-                                : index >= 128
-                                ? "" + bottom128[index - 128]
-                                : index == 0x7f
-                                ? "\u2302"
-                                : "" + ((char)index), font, brush, new Point(a * getCharacterWidth(), b * getCharacterHeight()));
-                        }
-                }
+                        pos.X = a * getCharacterWidth() + getCorrectionX();
+                        pos.Y = b * getCharacterHeight() + getCorrectionY();
 
-                pbPreview.Image = bmp;
-            } else pbPreview.Image = fontCache[newKey];
+                        g.DrawString(ch, font, brush, pos);
+                    }
+            }
+
+            pbPreview.Image = bmp;
+            //} else pbPreview.Image = fontCache[newKey];
         }
 
         private void lsbFontList_SelectedIndexChanged(object sender, EventArgs e)
@@ -132,13 +141,6 @@ namespace BitmapFontGenerator
             if (lsbFontList.SelectedIndex < 0) return;
 
             regeneratePreview();
-        }
-
-        private void txbSearch_KeyDown(object sender, KeyEventArgs e) {
-            lsbFontList.Items.Clear();
-            lsbFontList.Items.AddRange(
-                fontNames
-                    .Where(x => x.ToLower().Contains(txbSearch.Text.ToLower())).ToArray());
         }
 
         private void nudFontSize_ValueChanged(object sender, EventArgs e) {
@@ -166,6 +168,20 @@ namespace BitmapFontGenerator
         }
 
         private void cbTransparentBackground_CheckedChanged(object sender, EventArgs e) {
+            regeneratePreview();
+        }
+
+        private void txbSearch_TextChanged(object sender, EventArgs e) {
+            lsbFontList.Items.Clear();
+            lsbFontList.Items.AddRange(
+                fontNames.Where(x => x.ToLower().Contains(txbSearch.Text.ToLower())).ToArray());
+        }
+
+        private void nudCorrectionX_ValueChanged(object sender, EventArgs e) {
+            regeneratePreview();
+        }
+
+        private void nudCorrectionY_ValueChanged(object sender, EventArgs e) {
             regeneratePreview();
         }
 

@@ -45,12 +45,14 @@
             this.label5 = new System.Windows.Forms.Label();
             this.nudCorrectionX = new System.Windows.Forms.NumericUpDown();
             this.nudCorrectionY = new System.Windows.Forms.NumericUpDown();
+            this.pnlPreview = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCharacterWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCharacterHeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudFontSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCorrectionX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCorrectionY)).BeginInit();
+            this.pnlPreview.SuspendLayout();
             this.SuspendLayout();
             // 
             // lsbFontList
@@ -75,9 +77,9 @@
             // 
             // pbPreview
             // 
-            this.pbPreview.Location = new System.Drawing.Point(211, 51);
+            this.pbPreview.Location = new System.Drawing.Point(3, 3);
             this.pbPreview.Name = "pbPreview";
-            this.pbPreview.Size = new System.Drawing.Size(303, 283);
+            this.pbPreview.Size = new System.Drawing.Size(100, 100);
             this.pbPreview.TabIndex = 2;
             this.pbPreview.TabStop = false;
             // 
@@ -253,11 +255,21 @@
             this.nudCorrectionY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudCorrectionY.ValueChanged += new System.EventHandler(this.nudCorrectionY_ValueChanged);
             // 
+            // pnlPreview
+            // 
+            this.pnlPreview.AutoScroll = true;
+            this.pnlPreview.Controls.Add(this.pbPreview);
+            this.pnlPreview.Location = new System.Drawing.Point(211, 51);
+            this.pnlPreview.Name = "pnlPreview";
+            this.pnlPreview.Size = new System.Drawing.Size(303, 283);
+            this.pnlPreview.TabIndex = 17;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(776, 349);
+            this.Controls.Add(this.pnlPreview);
             this.Controls.Add(this.nudCorrectionY);
             this.Controls.Add(this.nudCorrectionX);
             this.Controls.Add(this.label5);
@@ -272,7 +284,6 @@
             this.Controls.Add(this.nudCharacterWidth);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.pbPreview);
             this.Controls.Add(this.lblFontName);
             this.Controls.Add(this.lsbFontList);
             this.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -280,7 +291,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "CP437 Font Generator - By Hevanafa (Sep 2024)";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCharacterWidth)).EndInit();
@@ -288,6 +299,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudFontSize)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCorrectionX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCorrectionY)).EndInit();
+            this.pnlPreview.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -312,6 +324,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.NumericUpDown nudCorrectionX;
         private System.Windows.Forms.NumericUpDown nudCorrectionY;
+        private System.Windows.Forms.Panel pnlPreview;
     }
 }
 

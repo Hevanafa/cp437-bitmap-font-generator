@@ -132,6 +132,7 @@ namespace BitmapFontGenerator
                     }
             }
 
+            pbPreview.Width = bmp.Width; pbPreview.Height = bmp.Height;
             pbPreview.Image = bmp;
             //} else pbPreview.Image = fontCache[newKey];
         }

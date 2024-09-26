@@ -23,6 +23,18 @@ namespace BitmapFontGenerator
             "\u25BA\u25C4\u2195\u203C\u00B6\u00A7\u25AC\u21A8" +
             "\u2191\u2193\u2192\u2190\u221F\u2194\u25B2\u25BC";
 
+        // Source: Wikipedia (https://en.wikipedia.org/wiki/Code_page_437)
+        // Obtain all <span> in the table row
+        // [...$0.querySelectorAll("span")].map(span => "\\u" + span.innerText).join("")
+        string bottom128 = "\u00C7\u00FC\u00E9\u00E2\u00E4\u00E0\u00E5\u00E7\u00EA\u00EB\u00E8\u00EF\u00EE\u00EC\u00C4\u00C5" + // 8x
+            "\u00C9\u00E6\u00C6\u00F4\u00F6\u00F2\u00FB\u00F9\u00FF\u00D6\u00DC\u00A2\u00A3\u00A5\u20A7\u0192" + // 9x
+            "\u00E1\u00ED\u00F3\u00FA\u00F1\u00D1\u00AA\u00BA\u00BF\u2310\u00AC\u00BD\u00BC\u00A1\u00AB\u00BB" + // Ax
+            "\u2591\u2592\u2593\u2502\u2524\u2561\u2562\u2556\u2555\u2563\u2551\u2557\u255D\u255C\u255B\u2510" + // Bx
+            "\u2514\u2534\u252C\u251C\u2500\u253C\u255E\u255F\u255A\u2554\u2569\u2566\u2560\u2550\u256C\u2567" + // Cx
+            "\u2568\u2564\u2565\u2559\u2558\u2552\u2553\u256B\u256A\u2518\u250C\u2588\u2584\u258C\u2590\u2580" + // Dx
+            "\u03B1\u00DF\u0393\u03C0\u03A3\u03C3\u00B5\u03C4\u03A6\u0398\u03A9\u03B4\u221E\u03C6\u03B5\u2229" +  // Ex
+            "\u2261\u00B1\u2265\u2264\u2320\u2321\u00F7\u2248\u00B0\u2219\u00B7\u221A\u207F\u00B2\u25A0\u00A0"; // Fx
+
         public Form1()
         {
             InitializeComponent();
@@ -72,6 +84,7 @@ namespace BitmapFontGenerator
         int getFontSize() { return (int)nudFontSize.Value; }
         int getCharacterWidth() { return (int)nudCharacterWidth.Value; }
         int getCharacterHeight() { return (int)nudCharacterHeight.Value; }
+        bool getTransparentBackground() { return cbTransparentBackground.Checked; }
 
         void regeneratePreview() {
             var fontName = getFontName();
@@ -90,17 +103,20 @@ namespace BitmapFontGenerator
                 var brush = new SolidBrush(Foreground);
 
                 using (Graphics g = Graphics.FromImage(bmp)) {
-                    g.Clear(Background);
+                    if (!getTransparentBackground())
+                        g.Clear(Background);
 
-                    int index;
+                    int index, a, b;
 
-                    for (var b = 0; b < 16; b++)
-                        for (var a = 0; a < 16; a++) {
+                    for (b = 0; b < 16; b++)
+                        for (a = 0; a < 16; a++) {
                             index = b * 16 + a;
 
                             g.DrawString(
                                 index < 32
                                 ? "" + top32[index]
+                                : index >= 128
+                                ? "" + bottom128[index - 128]
                                 : index == 0x7f
                                 ? "\u2302"
                                 : "" + ((char)index), font, brush, new Point(a * getCharacterWidth(), b * getCharacterHeight()));
@@ -122,8 +138,7 @@ namespace BitmapFontGenerator
             lsbFontList.Items.Clear();
             lsbFontList.Items.AddRange(
                 fontNames
-                    .Select(x => x.ToLower())
-                    .Where(x => x.Contains(txbSearch.Text.ToLower())).ToArray());
+                    .Where(x => x.ToLower().Contains(txbSearch.Text.ToLower())).ToArray());
         }
 
         private void nudFontSize_ValueChanged(object sender, EventArgs e) {
@@ -148,6 +163,10 @@ namespace BitmapFontGenerator
                 Background = colourDialogue.Color;
                 regeneratePreview();
             }
+        }
+
+        private void cbTransparentBackground_CheckedChanged(object sender, EventArgs e) {
+            regeneratePreview();
         }
 
         private void nudCharacterHeight_ValueChanged(object sender, EventArgs e) {

@@ -41,6 +41,7 @@
             this.txbSearch = new System.Windows.Forms.TextBox();
             this.btnForeground = new System.Windows.Forms.Button();
             this.btnBackground = new System.Windows.Forms.Button();
+            this.cbTransparentBackground = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCharacterWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCharacterHeight)).BeginInit();
@@ -186,11 +187,23 @@
             this.btnBackground.UseVisualStyleBackColor = true;
             this.btnBackground.Click += new System.EventHandler(this.btnBackground_Click);
             // 
+            // cbTransparentBackground
+            // 
+            this.cbTransparentBackground.AutoSize = true;
+            this.cbTransparentBackground.Location = new System.Drawing.Point(526, 314);
+            this.cbTransparentBackground.Name = "cbTransparentBackground";
+            this.cbTransparentBackground.Size = new System.Drawing.Size(166, 20);
+            this.cbTransparentBackground.TabIndex = 13;
+            this.cbTransparentBackground.Text = "Transparent background";
+            this.cbTransparentBackground.UseVisualStyleBackColor = true;
+            this.cbTransparentBackground.CheckedChanged += new System.EventHandler(this.cbTransparentBackground_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(683, 366);
+            this.ClientSize = new System.Drawing.Size(697, 366);
+            this.Controls.Add(this.cbTransparentBackground);
             this.Controls.Add(this.btnForeground);
             this.Controls.Add(this.btnBackground);
             this.Controls.Add(this.txbSearch);
@@ -233,6 +246,7 @@
         private System.Windows.Forms.TextBox txbSearch;
         private System.Windows.Forms.Button btnForeground;
         private System.Windows.Forms.Button btnBackground;
+        private System.Windows.Forms.CheckBox cbTransparentBackground;
     }
 }
 

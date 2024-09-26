@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.lsbFontList = new System.Windows.Forms.ListBox();
             this.lblFontName = new System.Windows.Forms.Label();
             this.pbPreview = new System.Windows.Forms.PictureBox();
@@ -46,6 +47,8 @@
             this.nudCorrectionX = new System.Windows.Forms.NumericUpDown();
             this.nudCorrectionY = new System.Windows.Forms.NumericUpDown();
             this.pnlPreview = new System.Windows.Forms.Panel();
+            this.cmsPreview = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsmiSaveImage = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCharacterWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCharacterHeight)).BeginInit();
@@ -53,6 +56,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudCorrectionX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCorrectionY)).BeginInit();
             this.pnlPreview.SuspendLayout();
+            this.cmsPreview.SuspendLayout();
             this.SuspendLayout();
             // 
             // lsbFontList
@@ -77,6 +81,7 @@
             // 
             // pbPreview
             // 
+            this.pbPreview.ContextMenuStrip = this.cmsPreview;
             this.pbPreview.Location = new System.Drawing.Point(3, 3);
             this.pbPreview.Name = "pbPreview";
             this.pbPreview.Size = new System.Drawing.Size(100, 100);
@@ -258,11 +263,26 @@
             // pnlPreview
             // 
             this.pnlPreview.AutoScroll = true;
+            this.pnlPreview.ContextMenuStrip = this.cmsPreview;
             this.pnlPreview.Controls.Add(this.pbPreview);
             this.pnlPreview.Location = new System.Drawing.Point(211, 51);
             this.pnlPreview.Name = "pnlPreview";
             this.pnlPreview.Size = new System.Drawing.Size(303, 283);
             this.pnlPreview.TabIndex = 17;
+            // 
+            // cmsPreview
+            // 
+            this.cmsPreview.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiSaveImage});
+            this.cmsPreview.Name = "cmsPreview";
+            this.cmsPreview.Size = new System.Drawing.Size(181, 48);
+            // 
+            // tsmiSaveImage
+            // 
+            this.tsmiSaveImage.Name = "tsmiSaveImage";
+            this.tsmiSaveImage.Size = new System.Drawing.Size(180, 22);
+            this.tsmiSaveImage.Text = "Save";
+            this.tsmiSaveImage.Click += new System.EventHandler(this.tsmiSaveImage_Click);
             // 
             // Form1
             // 
@@ -300,6 +320,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudCorrectionX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCorrectionY)).EndInit();
             this.pnlPreview.ResumeLayout(false);
+            this.cmsPreview.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -325,6 +346,8 @@
         private System.Windows.Forms.NumericUpDown nudCorrectionX;
         private System.Windows.Forms.NumericUpDown nudCorrectionY;
         private System.Windows.Forms.Panel pnlPreview;
+        private System.Windows.Forms.ContextMenuStrip cmsPreview;
+        private System.Windows.Forms.ToolStripMenuItem tsmiSaveImage;
     }
 }
 

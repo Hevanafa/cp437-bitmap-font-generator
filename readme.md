@@ -2,4 +2,4 @@
 
 TrueType to bitmap font generator (usually used in Dwarf Fortress).
 
-#[Preview](./preview.png)
+![Preview](./preview.png)

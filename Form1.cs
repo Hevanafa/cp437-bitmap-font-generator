@@ -1,23 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BitmapFontGenerator
 {
     public partial class Form1 : Form
     {
-        // Todo: upload to Github
-        // Todo: add the transparent background
-        // Todo: add more charsets
+        // Done: upload to Github
+        // Done: foreground & background
+        // Done: add the transparent background
+        // Done: Button to Save as image (also right click on the picture box)
+        // Todo: Allow loading custom font
+        // Done: highlight active font in the list (on search, if it's on the list)
+        // Optional: add an option to generate a horizontal strip of characters & save the starts & lengths as a text file
+        // Optional: add more charsets
 
         List<string> fontNames;
         Dictionary<FontCacheKey, Bitmap> fontCache;
+        string lastSelectedFontName;
 
         const string top32 = " \u263a\u263B\u2665\u2666\u2663\u2660\u2022" + 
             "\u25D8\u25CB\u25D9\u2642\u2640\u266A\u266B\u263C" +
@@ -46,17 +51,25 @@ namespace BitmapFontGenerator
             fontNames = new List<string>();
             fontCache = new Dictionary<FontCacheKey, Bitmap>();
             colourDialogue = new ColorDialog();
+            saveFileDialogue = new SaveFileDialog() {
+                Filter = "PNG image|*.png|All Files|*.*"
+            };
 
             foreach (var font in FontFamily.Families)
                 fontNames.Add(font.Name);
 
+            lastSelectedFontName = fontNames[0];
             lsbFontList.Items.AddRange(fontNames.ToArray());
-
+            lsbFontList.SelectedItem = lastSelectedFontName;
+            
             Foreground = Color.Black;
             Background = Color.White;
+
+            regeneratePreview();
         }
 
         ColorDialog colourDialogue;
+        SaveFileDialog saveFileDialogue;
 
         Color _foreground, _background;
         Color Foreground {
@@ -81,7 +94,7 @@ namespace BitmapFontGenerator
         //    set { nudCharacterHeight.Value = value; }
         //}
 
-        string getFontName() { return lsbFontList.SelectedItem.ToString(); }
+        string getFontName() { return lsbFontList.SelectedItem == null ? null : lsbFontList.SelectedItem.ToString(); }
         int getFontSize() { return (int)nudFontSize.Value; }
         int getCharacterWidth() { return (int)nudCharacterWidth.Value; }
         int getCharacterHeight() { return (int)nudCharacterHeight.Value; }
@@ -92,8 +105,8 @@ namespace BitmapFontGenerator
 
         void regeneratePreview() {
             var fontName = getFontName();
+            if (fontName == null) return;
 
-            // Todo: foreground & background
             // Is caching really necessary?
             //var newKey = new FontCacheKey(fontName, getFontSize(), getCharacterWidth(), getCharacterHeight());
 
@@ -141,6 +154,7 @@ namespace BitmapFontGenerator
         {
             if (lsbFontList.SelectedIndex < 0) return;
 
+            lastSelectedFontName = lsbFontList.SelectedItem.ToString();
             regeneratePreview();
         }
 
@@ -174,8 +188,11 @@ namespace BitmapFontGenerator
 
         private void txbSearch_TextChanged(object sender, EventArgs e) {
             lsbFontList.Items.Clear();
+
             lsbFontList.Items.AddRange(
                 fontNames.Where(x => x.ToLower().Contains(txbSearch.Text.ToLower())).ToArray());
+
+            lsbFontList.SelectedItem = lastSelectedFontName;
         }
 
         private void nudCorrectionX_ValueChanged(object sender, EventArgs e) {
@@ -184,6 +201,17 @@ namespace BitmapFontGenerator
 
         private void nudCorrectionY_ValueChanged(object sender, EventArgs e) {
             regeneratePreview();
+        }
+
+        private void tsmiSaveImage_Click(object sender, EventArgs e) {
+            if (pbPreview.Image == null || saveFileDialogue.ShowDialog() != DialogResult.OK) return;
+
+            try {
+                pbPreview.Image.Save(saveFileDialogue.FileName, ImageFormat.Png);
+                MessageBox.Show($"Saved as \"{saveFileDialogue.FileName}\".");
+            } catch (Exception ex) {
+                MessageBox.Show("Failed to save the image. Reason: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void nudCharacterHeight_ValueChanged(object sender, EventArgs e) {
@@ -201,7 +229,7 @@ namespace BitmapFontGenerator
         public readonly int id;
         public string Name;
         public int fontSizeEm, characterWidth, characterHeight;
-        // Todo: foreground & background
+        
         public FontCacheKey(string fontName, int fontSizeEm, int characterWidth, int characterHeight) {
             id = getNextAvailableID();
             this.Name = fontName;

@@ -32,6 +32,8 @@
             this.lsbFontList = new System.Windows.Forms.ListBox();
             this.lblFontName = new System.Windows.Forms.Label();
             this.pbPreview = new System.Windows.Forms.PictureBox();
+            this.cmsPreview = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsmiSaveImage = new System.Windows.Forms.ToolStripMenuItem();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.nudCharacterWidth = new System.Windows.Forms.NumericUpDown();
@@ -47,16 +49,16 @@
             this.nudCorrectionX = new System.Windows.Forms.NumericUpDown();
             this.nudCorrectionY = new System.Windows.Forms.NumericUpDown();
             this.pnlPreview = new System.Windows.Forms.Panel();
-            this.cmsPreview = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.tsmiSaveImage = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnLoadCustomFont = new System.Windows.Forms.Button();
+            this.cbUseCustomFont = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).BeginInit();
+            this.cmsPreview.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudCharacterWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCharacterHeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudFontSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCorrectionX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCorrectionY)).BeginInit();
             this.pnlPreview.SuspendLayout();
-            this.cmsPreview.SuspendLayout();
             this.SuspendLayout();
             // 
             // lsbFontList
@@ -66,7 +68,7 @@
             this.lsbFontList.Location = new System.Drawing.Point(13, 42);
             this.lsbFontList.Margin = new System.Windows.Forms.Padding(4);
             this.lsbFontList.Name = "lsbFontList";
-            this.lsbFontList.Size = new System.Drawing.Size(191, 292);
+            this.lsbFontList.Size = new System.Drawing.Size(191, 244);
             this.lsbFontList.TabIndex = 0;
             this.lsbFontList.SelectedIndexChanged += new System.EventHandler(this.lsbFontList_SelectedIndexChanged);
             // 
@@ -87,6 +89,20 @@
             this.pbPreview.Size = new System.Drawing.Size(100, 100);
             this.pbPreview.TabIndex = 2;
             this.pbPreview.TabStop = false;
+            // 
+            // cmsPreview
+            // 
+            this.cmsPreview.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiSaveImage});
+            this.cmsPreview.Name = "cmsPreview";
+            this.cmsPreview.Size = new System.Drawing.Size(99, 26);
+            // 
+            // tsmiSaveImage
+            // 
+            this.tsmiSaveImage.Name = "tsmiSaveImage";
+            this.tsmiSaveImage.Size = new System.Drawing.Size(98, 22);
+            this.tsmiSaveImage.Text = "Save";
+            this.tsmiSaveImage.Click += new System.EventHandler(this.tsmiSaveImage_Click);
             // 
             // label2
             // 
@@ -270,25 +286,35 @@
             this.pnlPreview.Size = new System.Drawing.Size(303, 283);
             this.pnlPreview.TabIndex = 17;
             // 
-            // cmsPreview
+            // btnLoadCustomFont
             // 
-            this.cmsPreview.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiSaveImage});
-            this.cmsPreview.Name = "cmsPreview";
-            this.cmsPreview.Size = new System.Drawing.Size(181, 48);
+            this.btnLoadCustomFont.Location = new System.Drawing.Point(111, 293);
+            this.btnLoadCustomFont.Name = "btnLoadCustomFont";
+            this.btnLoadCustomFont.Size = new System.Drawing.Size(93, 41);
+            this.btnLoadCustomFont.TabIndex = 18;
+            this.btnLoadCustomFont.Text = "Load Custom";
+            this.btnLoadCustomFont.UseVisualStyleBackColor = true;
+            this.btnLoadCustomFont.Click += new System.EventHandler(this.btnLoadCustomFont_Click);
             // 
-            // tsmiSaveImage
+            // cbUseCustomFont
             // 
-            this.tsmiSaveImage.Name = "tsmiSaveImage";
-            this.tsmiSaveImage.Size = new System.Drawing.Size(180, 22);
-            this.tsmiSaveImage.Text = "Save";
-            this.tsmiSaveImage.Click += new System.EventHandler(this.tsmiSaveImage_Click);
+            this.cbUseCustomFont.AutoSize = true;
+            this.cbUseCustomFont.Enabled = false;
+            this.cbUseCustomFont.Location = new System.Drawing.Point(13, 296);
+            this.cbUseCustomFont.Name = "cbUseCustomFont";
+            this.cbUseCustomFont.Size = new System.Drawing.Size(92, 36);
+            this.cbUseCustomFont.TabIndex = 19;
+            this.cbUseCustomFont.Text = "Use custom\r\nfont";
+            this.cbUseCustomFont.UseVisualStyleBackColor = true;
+            this.cbUseCustomFont.CheckedChanged += new System.EventHandler(this.cbUseCustomFont_CheckedChanged);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(776, 349);
+            this.Controls.Add(this.cbUseCustomFont);
+            this.Controls.Add(this.btnLoadCustomFont);
             this.Controls.Add(this.pnlPreview);
             this.Controls.Add(this.nudCorrectionY);
             this.Controls.Add(this.nudCorrectionX);
@@ -314,13 +340,13 @@
             this.Text = "CP437 Font Generator - By Hevanafa (Sep 2024)";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).EndInit();
+            this.cmsPreview.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nudCharacterWidth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCharacterHeight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudFontSize)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCorrectionX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCorrectionY)).EndInit();
             this.pnlPreview.ResumeLayout(false);
-            this.cmsPreview.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -348,6 +374,8 @@
         private System.Windows.Forms.Panel pnlPreview;
         private System.Windows.Forms.ContextMenuStrip cmsPreview;
         private System.Windows.Forms.ToolStripMenuItem tsmiSaveImage;
+        private System.Windows.Forms.Button btnLoadCustomFont;
+        private System.Windows.Forms.CheckBox cbUseCustomFont;
     }
 }
 

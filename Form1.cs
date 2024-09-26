@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -15,14 +16,19 @@ namespace BitmapFontGenerator
         // Done: foreground & background
         // Done: add the transparent background
         // Done: Button to Save as image (also right click on the picture box)
-        // Todo: Allow loading custom font
         // Done: highlight active font in the list (on search, if it's on the list)
+        // Done: Allow loading custom font
         // Optional: add an option to generate a horizontal strip of characters & save the starts & lengths as a text file
         // Optional: add more charsets
 
         List<string> fontNames;
         Dictionary<FontCacheKey, Bitmap> fontCache;
         string lastSelectedFontName;
+
+        ColorDialog colourDialogue;
+        SaveFileDialog saveFileDialogue;
+        OpenFileDialog openCustomFontFileDialogue;
+        PrivateFontCollection customFontCollection;
 
         const string top32 = " \u263a\u263B\u2665\u2666\u2663\u2660\u2022" + 
             "\u25D8\u25CB\u25D9\u2642\u2640\u266A\u266B\u263C" +
@@ -52,7 +58,12 @@ namespace BitmapFontGenerator
             fontCache = new Dictionary<FontCacheKey, Bitmap>();
             colourDialogue = new ColorDialog();
             saveFileDialogue = new SaveFileDialog() {
-                Filter = "PNG image|*.png|All Files|*.*"
+                Filter = "PNG image|*.png|All files|*.*"
+            };
+
+            openCustomFontFileDialogue = new OpenFileDialog() {
+                Multiselect = false,
+                Filter = "TTF files|*.ttf|OTF files|*.otf|All files|*.*"
             };
 
             foreach (var font in FontFamily.Families)
@@ -67,9 +78,6 @@ namespace BitmapFontGenerator
 
             regeneratePreview();
         }
-
-        ColorDialog colourDialogue;
-        SaveFileDialog saveFileDialogue;
 
         Color _foreground, _background;
         Color Foreground {
@@ -94,7 +102,14 @@ namespace BitmapFontGenerator
         //    set { nudCharacterHeight.Value = value; }
         //}
 
-        string getFontName() { return lsbFontList.SelectedItem == null ? null : lsbFontList.SelectedItem.ToString(); }
+        string getFontName() {
+            return useCustomFont()
+                ? customFontCollection.Families[0].Name
+                : lsbFontList.SelectedItem == null
+                ? null
+                : lsbFontList.SelectedItem.ToString();
+        }
+
         int getFontSize() { return (int)nudFontSize.Value; }
         int getCharacterWidth() { return (int)nudCharacterWidth.Value; }
         int getCharacterHeight() { return (int)nudCharacterHeight.Value; }
@@ -102,6 +117,7 @@ namespace BitmapFontGenerator
 
         int getCorrectionX() { return (int)nudCorrectionX.Value; }
         int getCorrectionY() { return (int)nudCorrectionY.Value; }
+        bool useCustomFont() { return cbUseCustomFont.Checked; }
 
         void regeneratePreview() {
             var fontName = getFontName();
@@ -212,6 +228,34 @@ namespace BitmapFontGenerator
             } catch (Exception ex) {
                 MessageBox.Show("Failed to save the image. Reason: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void btnLoadCustomFont_Click(object sender, EventArgs e) {
+            if (openCustomFontFileDialogue.ShowDialog() != DialogResult.OK) return;
+
+            try {
+                if (customFontCollection != null) {
+                    customFontCollection.Dispose();
+                    customFontCollection = null;
+                }
+                
+                customFontCollection = new PrivateFontCollection();
+                customFontCollection.AddFontFile(openCustomFontFileDialogue.FileName);
+                // var fontFamily = new FontFamily(customFontCollection.Families[0].Name, customFontCollection);
+                // var font = new Font(fontFamily, getFontSize());
+
+                cbUseCustomFont.Enabled = true;
+                cbUseCustomFont.Checked = true;
+
+                regeneratePreview();
+            } catch (Exception ex) {
+                MessageBox.Show("Unable to load custom font. Reason: " + ex.Message);
+            }
+        }
+
+        private void cbUseCustomFont_CheckedChanged(object sender, EventArgs e) {
+            txbSearch.Enabled = lsbFontList.Enabled = !cbUseCustomFont.Checked;
+            regeneratePreview();
         }
 
         private void nudCharacterHeight_ValueChanged(object sender, EventArgs e) {
